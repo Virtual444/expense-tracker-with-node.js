@@ -10,9 +10,19 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, 'views')));
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/login', (req, res) => {
+  res.sendFile(__dirname + '/views/login.html');
+});
 
+
+app.get('/signup', (req, res) => {
+  res.sendFile(__dirname + '/views/signup.html');
+});
+app.use(express.static('public'));
+                 
+                                   
+// app.use(express.static(path.j  oin(__dirname, 'views')))
+// app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', expenseRoutes);
 
 sequelize.sync()

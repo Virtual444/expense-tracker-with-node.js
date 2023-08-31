@@ -3,7 +3,8 @@ const router = express.Router();
 const expenseControllers = require('../controllers/expenseControllers');
 
 
-router.post('/user/signup', expenseControllers.addUser);
-
-
-module.exports = router;
+router.post('/signup', expenseControllers.addUser);
+router.post('/login', expenseControllers.loginUser);
+router.get('/user/dashboard', expenseControllers.dashboard);
+ 
+module.exports = router; 

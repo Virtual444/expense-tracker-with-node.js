@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <title>Login Page </title>
+    
+    
+</head>
+<body>
+
+    <div class="container">
+        <form >
+            <label for="email" >Email:</label>
+            <input type="text" id="email" required>
+            <label for="password" >Password:</label>
+            <input type="password" id="password"  required>
+            <div class="checkbox-container">
+                <input type="checkbox" class="form-checkbox" id="visibilityCheckbox" onchange="togglePasswordVisibility()">
+                <label for="visibilityCheckbox" id="form-checkbox-label">Show Password</label>
+            </div>
+<br>
+            <button  type="submit" id="loginButton" >Log In</button>
+
+        </form>  
+       
+        <div class="login-box" style="text-align: center;" >
+                <h4>don't have account ?</h4>
+                <button class="login" onclick="window.location.href = 'http://localhost:3000/signup' ">Sign Up</button>
+
+            </div>
+    
+            <h3 class="message" id="message" style="display: none;" style="color: red;">You don't have account, Please sign up</h3>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/main.js"></script>
+</body>
+</html>

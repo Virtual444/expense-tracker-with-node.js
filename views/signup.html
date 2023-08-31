@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <title>Sign up page</title>
+    
+</head>
+<body>
+
+    
+
+    <div class="container">
+        <form >
+            
+            
+
+            <label for="name"  >Name:</label>
+            <input type="text" id="name" required>
+            <label for="email" >Email:</label>
+            <input type="text" id="email" required>
+            <label for="password" >Password:</label>
+            <input type="password" id="password"  required>
+            <div class="checkbox-container">
+                <input type="checkbox" class="form-checkbox" id="visibilityCheckbox" onchange="togglePasswordVisibility()">
+                <label for="visibilityCheckbox" id="form-checkbox-label">Show Password</label>
+            </div>
+<br>
+            <button  type="submit" id="signUpbutton" >Sign Up</button>
+
+        </form>
+       
+        <div class="login-box" style="text-align: center;" >
+                <h4>Already Registered ?</h4>
+                <button class="login" onclick="window.location.href = 'http://localhost:3000/login' ">Login</button>
+            </div >
+     <div class="message" id="message"  style="display: block; color: red;" ></div>
+
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+     <script src="/main.js"></script>
+</body>
+</html>
