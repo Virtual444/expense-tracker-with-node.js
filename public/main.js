@@ -85,39 +85,35 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         try {
-           const response = axios.post('http://localhost:3000/login', user)
+           const response =  await axios.post('http://localhost:3000/login', user)
+           console.log(response.data);
     
            if (response.status ===  200) {
               
             window.location.href = 'http://localhost:3000/dashboard';
+
+           console.log('Asit Pal');
            }
            
-    
-           
         } catch (error) {
-           console.log(error);
-           if (error.response && error.response.data && error.response.data.message === 'Used Email is not Registered') {
-                    
-            const message = document.getElementById('message');
-            message.innerHTML = '<h3> Email is not Registered</h3>'
 
-        }
-        
-        else if(error.response && error.response.data && error.response.data.message === 'All fields are required.'){
-            message.innerHTML = '<h3> All fields are required.</h3>'
+            console.log(error.response);
 
-        }
-        else  if(error.response && error.response.data && error.response.data.message === 'Paasword is not correct'){
+            if (error.response) {
+                const message = document.getElementById('message');
 
-            message.innerHTML = '<h3> All fields are required.</h3>'
-
-
-  
-        }
-      else   {
-            
-            console.log('An error occurred:', error);
-        }
+                if (error.response.data && error.response.data.message === 'Used Email is not Registered') {
+                    message.innerHTML = '<h3>Email is not Registered</h3>';
+                } else if (error.response.data && error.response.data.message === 'All fields are required.') {
+                    message.innerHTML = '<h3>All fields are required.</h3>';
+                } else if (error.response.data && error.response.data.message === 'Incorrect password') {
+                    message.innerHTML = '<h3>Incorrect password.</h3>';
+                } else {
+                    console.log('An error occurred:', error);
+                }
+            } else {
+                console.log('An error occurred:', error);
+            }
            
         }
     

@@ -1,4 +1,6 @@
 const  user = require('../models/user');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 exports.addUser = async(req, res, next) => {
     const { name, email, password} = req.body;
@@ -16,7 +18,10 @@ exports.addUser = async(req, res, next) => {
         if(existingUser) {
             return res.status(400).json({message: "User already Exists"});
         }
-        const newUser = await user.create({name, email, password});
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        
+        const newUser = await user.create({name, email, password: hashedPassword});
         res.status(200).json({newUser});
         
         
@@ -42,15 +47,18 @@ exports.loginUser = async (req, res, next) => {
 
         const alreadyUser = await user.findOne({
             where: { email: email }
-        });
+        }); 
 
         if (!alreadyUser) {
             return res.status(401).json({ message: 'Used Email is not Registered' });
         }
+        const isMatch = await bcrypt.compare(password, alreadyUser.password);
 
-        if (password !== alreadyUser.password) {
-            return res.status(401).json({ message: 'Paasword is not correct' });
-        }
+          if (!isMatch) {
+            return res.status(401).json({ message: 'Incorrect password' });
+    }
+
+        
 
         res.status(200).json({alreadyUser});
         

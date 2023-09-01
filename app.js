@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const  cors = require('cors');
 const sequelize = require('./util/database');
 const expenseRoutes = require('./routes/expenseRoutes');
-
 const app = express();
 
-app.use(express.json());
+
 app.use(cors());
+app.use(express.json());
+
 
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/views/login.html');
