@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static('public'));
 
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/views/login.html');
@@ -18,8 +19,13 @@ app.get('/login', (req, res) => {
 
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/views/signup.html');
-});
-app.use(express.static('public'));
+});    
+
+app.get('/user/dashboard', (req, res) => {
+  res.sendFile(__dirname + '/views/dashboard.html');
+}); 
+
+
                  
                                    
 // app.use(express.static(path.j  oin(__dirname, 'views')))

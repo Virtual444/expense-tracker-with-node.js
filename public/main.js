@@ -89,12 +89,13 @@ document.addEventListener("DOMContentLoaded", function() {
            console.log(response.data);
     
            if (response.status ===  200) {
-              
-            window.location.href = 'http://localhost:3000/dashboard';
+
+             populateTable();  
+            window.location.href = 'http://localhost:3000/user/dashboard';
 
            console.log('Asit Pal');
            }
-           
+            
         } catch (error) {
 
             console.log(error.response);
@@ -117,14 +118,57 @@ document.addEventListener("DOMContentLoaded", function() {
            
         }
     
-
+ 
         });
 
         
     }
+
+    const addExpenseButton = document.getElementById('addExpenseButton');
+    if(addExpenseButton) {
+        addExpenseButton.addEventListener("click", async function(event) {
+            event.preventDefault();
+
+         const name = document.getElementById('expenseName').value;
+         const amountInput = document.getElementById('expenseAmount');
+         const amount = parseFloat(amountInput.value);
+
+         if (name && !isNaN(amount)) {
+            const data = {
+              name: name,
+              amount: amount
+              
+            };
+
+            try {
+                const response  = await axios.post('http://localhost:3000/user/add-expense', data)
+           console.log(response.data.status);
+
+           if(response.status === 201) {
+            const message = document.getElementById('message');
+            message.innerHTML = '<h3> Successfully Added</h3>'
+            document.getElementById('expenseName').value = '';
+        amountInput.value = '';
+        expenseTableBody.innerHTML = '';
+        populateTable();
+           }
+
+
+            } catch (error) {
+                console.log('An error occurred:', error);
+                
+            }
+
+           
+
+         }
+        });
+    }
+
     
     
 });
+
 
 function togglePasswordVisibility() {
         var passwordInput = document.getElementById("password");

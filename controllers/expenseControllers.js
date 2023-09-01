@@ -1,4 +1,6 @@
 const  user = require('../models/user');
+const Expense = require('../models/expenses');
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -71,6 +73,99 @@ exports.loginUser = async (req, res, next) => {
 };
 
 
-exports.dashboard = async(req, res, next) => {
+exports.addExpense = async(req, res, next) => {
+    const { name, amount, category } = req.body;
+
+    try {
+        if (!name || !amount || !category) {
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+
+        const newExpense = await Expense.create({ name, amount, category});
+        console.log(newExpense);
+        res.status(201).json({newExpense});
+    
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
 
 };
+
+exports.allExpenses = async (req, res, next) => {
+  
+    try {
+        const expenses = await Expense.findAll();
+        console.log(expenses);
+        res.status(200).json({ expenses });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+exports.deleteExpense = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const targetExpense = await Expense.findOne({where: {id:id}});
+        console.log(targetExpense);
+        if(!targetExpense) {
+            return res.status(404).json({error:'Expense not found'})
+        }
+
+        await targetExpense.destroy();
+        res.status(200).json({message: 'Deleted succesfullly'})
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server error'})
+    }
+
+}
+
+exports.editExpense = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const expense = await Expense.findByPk(id);
+  
+      if (!expense) {
+        return res.status(404).json({ error: 'Expense not found' });
+      }
+  
+      res.status(200).json({ expense });
+    } catch (error) {
+
+      console.log(error);
+      
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
+exports.updateExpense = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const { name, amount, category } = req.body;
+  
+      const expense = await Expense.findByPk(id);
+  
+      if (!expense) {
+        return res.status(404).json({ error: 'Expense not found' });
+      }
+  
+      expense.name = name;
+      expense.amount = amount;
+      expense.category = category;
+  
+      await expense.save();
+  
+      res.status(200).json({ message: 'Expense updated successfully' });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
+
+

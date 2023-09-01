@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+   <link rel="stylesheet" type="text/css" href="/dashboard.css">
+  <title>Expense Tracker</title>
+ 
+</head>
+<body>
+  
+ 
+  <!-- <div class="big-container">
+    <header class="main-header">
+   
+      <ul class="main-header__item-list">
+          <li class="main-header__item">
+              <a class="" href="/">Home</a>
+          </li>
+          <li class="main-header__item">
+              <a class="" href="/products">Membership</a>
+          </li>
+          <li class="main-header__item">
+              <a class="" href="/cart">About Us</a>
+          </li>
+          <li class="main-header__item">
+              <a class="" href="/orders">Contact Us</a>
+          </li>
+          <li class="main-header__item">
+              <a class="" href="/admin/add-product">Log Out</a>
+          </li>
+         
+      </ul>
+  
+</header> -->
+
+
+<div class="header">
+  <div class="header-left">
+    <h1>Expense Tracker</h1>
+  </div>
+  <div class="header-right">
+    <ul class="nav-links">
+      <li class="nav-link"><a href="/">Home</a></li>
+      <li class="nav-link"><a href="/products">Membership</a></li>
+      <li class="nav-link"><a href="/cart">About Us</a></li>
+      <li class="nav-link"><a href="/orders">Contact Us</a></li>
+      <li class="nav-link"><a href="/admin/add-product">Log Out</a></li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="form-container">
+    <form id="expenseForm" action="#">
+      <label for="expenseName" style="font-weight: bold;">Expense Name:</label>
+      <input type="text" id="expenseName" style="font-weight: bold;" required><br><br>
+      <label for="expenseAmount" style="font-weight: bold;">Expense Amount:</label>
+      <input type="number" id="expenseAmount" style="font-weight: bold;" required><br><br>
+      <label for="categoryText" style="font-weight: bold;">Expense Category:</label>
+      <input type="category" id="categoryText" name="category" style="font-weight: bold; width: 30%;">
+      <select id="categorySelect" name="category" style="font-weight: bold;">
+        <option value="Food">Food</option>
+        <option value="Travel"> Travel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Health"> Health</option>
+        <option value="Others">Others</option>
+       
+    </select>
+    <br>
+    <br>
+    <br>
+      <button type="submit" id="addExpenseButton" class="col-md-4 text-center">Add Expense</button>
+      <br><br>
+      <div class="message" id="message" style="display: block; color: red;"></div>
+    </form>
+    <h3>Total Expenses: <span id="totalExpenses">0</span></h3>
+  </div>
+  <div class="table-container" id="table-container">
+    <table>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Expense Name</th>
+        <th scope="col">Expense Price</th>
+        <th scope="col">Expense Category</th>
+        <th scope="col">Manage Expense</th>
+      </tr>
+      <tbody id="expenseTableBody"></tbody>
+    </table>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/dashboard.js"></script>
+</body>
+</html>
