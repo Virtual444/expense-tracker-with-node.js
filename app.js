@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const  cors = require('cors');
 const sequelize = require('./util/database');
 const expenseRoutes = require('./routes/expenseRoutes');
+const User = require('./models/user');
+const Expense = require('./models/expenses');
 const app = express();
 
 
@@ -25,8 +27,12 @@ app.get('/user/dashboard', (req, res) => {
   res.sendFile(__dirname + '/views/dashboard.html');
 }); 
 
+User.hasMany(Expense);
+Expense.hasOne(User);
 
-                 
+
+
+                   
                                    
 // app.use(express.static(path.j  oin(__dirname, 'views')))
 // app.use(express.static(path.join(__dirname, 'public')))

@@ -1,8 +1,16 @@
 const  user = require('../models/user');
 const Expense = require('../models/expenses');
-
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
+const jwt = require('jsonwebtoken');
+
+
+function generateToken(id) {
+    return jwt.sign({userId: id}, secretKey)
+}
+
+
 
 exports.addUser = async(req, res, next) => {
     const { name, email, password} = req.body;
@@ -60,9 +68,8 @@ exports.loginUser = async (req, res, next) => {
             return res.status(401).json({ message: 'Incorrect password' });
     }
 
-        
-
-        res.status(200).json({alreadyUser});
+       const token =  generateToken(alreadyUser.id);
+       res.status(200).json({message: 'user logged in successfully', token:token});
         
     } catch (error) {
         
@@ -73,15 +80,26 @@ exports.loginUser = async (req, res, next) => {
 };
 
 
+
 exports.addExpense = async(req, res, next) => {
     const { name, amount, category } = req.body;
+    console.log(req.body);
 
     try {
         if (!name || !amount || !category) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        const newExpense = await Expense.create({ name, amount, category});
+
+        const token = req.header('Authorization');
+        console.log(token);
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const user =  jwt.verify(token, secretKey);
+        
+        const userId = user.userId;
+        const newExpense = await Expense.create({ name, amount, category, userId});
         console.log(newExpense);
         res.status(201).json({newExpense});
     
@@ -95,14 +113,26 @@ exports.addExpense = async(req, res, next) => {
 };
 
 exports.allExpenses = async (req, res, next) => {
+    //console.log('nikhil');
   
     try {
-        const expenses = await Expense.findAll();
+        const token = req.header('Authorization');
+        console.log(token);
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const user =  jwt.verify(token, secretKey);
+        
+        const id = user.userId;
+         console.log(id);
+        const expenses = await Expense.findAll({
+            where: { userId: id }
+        });
         console.log(expenses);
         res.status(200).json({ expenses });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Errorr' });
     }
 };
 

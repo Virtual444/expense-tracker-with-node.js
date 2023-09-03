@@ -26,8 +26,15 @@ const Expense = sequelize.define('Expense', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false, 
+        references: {
+            model: 'User', 
+            key: 'id'     
+        }
 
-    
+    }
 
 
 

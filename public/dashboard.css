@@ -66,13 +66,14 @@ button:hover {
   padding: 20px;
   background-color: #fff;
   
-  width: 100%;
+width: 100%;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
 }
+
 
 th, td {
   

@@ -51,6 +51,9 @@ function calculateTotalExpenses(expenses) {
         const category = document.getElementById('categoryText').value;
        // const entryKey = `entry_${Date.now()}`;
     //    console.log(category);
+
+    const token = localStorage.getItem('token');
+
         
         if (name && !isNaN(amount) && category) {
           const data = {
@@ -62,7 +65,7 @@ function calculateTotalExpenses(expenses) {
           };
 
           try {
-            const response = await axios.post('http://localhost:3000/user/add-expense', data)
+            const response = await axios.post('http://localhost:3000/user/add-expense', data, {headers: {"Authorization" : token}})
 
             if(response.status === 201){
                 document.getElementById('expenseName').value = '';
@@ -79,6 +82,10 @@ function calculateTotalExpenses(expenses) {
           } catch (error) {
             console.log(error);
              }
+    }else {
+      const message = document.getElementById('message');
+                message.innerHTML = '<h3>All fields are required</h3>'
+
     }
       });
       
@@ -87,8 +94,9 @@ function calculateTotalExpenses(expenses) {
       //
       
     function populateTable() {
-    
-      axios.get('http://localhost:3000/allExpenses')
+      const token = localStorage.getItem('token');
+     // console.log(token);
+      axios.get('http://localhost:3000/allExpenses', {headers: {"Authorization" : token}} )
     
       .then(response => {
          console.log(response.data)
@@ -261,6 +269,15 @@ function editExpense(id, event) {
    }
 
 
+const logOut = document.getElementById('logOutLink');
+
+logOut.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  localStorage.removeItem('token');
+  window.location.href = '/login'; 
+
+})
 
 });
 

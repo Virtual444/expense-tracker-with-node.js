@@ -44,7 +44,7 @@
       <li class="nav-link"><a href="/products">Membership</a></li>
       <li class="nav-link"><a href="/cart">About Us</a></li>
       <li class="nav-link"><a href="/orders">Contact Us</a></li>
-      <li class="nav-link"><a href="/admin/add-product">Log Out</a></li>
+      <li class="nav-link" id="logOutLink" ><a href="#">Log Out</a></li>
     </ul>
   </div>
 </div>
@@ -56,8 +56,9 @@
       <label for="expenseAmount" style="font-weight: bold;">Expense Amount:</label>
       <input type="number" id="expenseAmount" style="font-weight: bold;" required><br><br>
       <label for="categoryText" style="font-weight: bold;">Expense Category:</label>
-      <input type="category" id="categoryText" name="category" style="font-weight: bold; width: 30%;">
+      <input type="category" id="categoryText" name="category" style="font-weight: bold; width: 30%;" required>
       <select id="categorySelect" name="category" style="font-weight: bold;">
+        <option value="Food">Select Category</option>
         <option value="Food">Food</option>
         <option value="Travel"> Travel</option>
         <option value="Shopping">Shopping</option>
