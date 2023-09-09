@@ -2,14 +2,13 @@ const  user = require('../models/user');
 const Expense = require('../models/expenses');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
 const jwt = require('jsonwebtoken');
+const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
 
 
 function generateToken(id) {
     return jwt.sign({userId: id}, secretKey)
 }
-
 
 
 exports.addUser = async(req, res, next) => {
@@ -82,6 +81,7 @@ exports.loginUser = async (req, res, next) => {
 
 
 exports.addExpense = async(req, res, next) => {
+   
     const { name, amount, category } = req.body;
     console.log(req.body);
 
@@ -89,17 +89,14 @@ exports.addExpense = async(req, res, next) => {
         if (!name || !amount || !category) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
-
-
-        const token = req.header('Authorization');
-        console.log(token);
-        if (!token) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
-        const user =  jwt.verify(token, secretKey);
         
-        const userId = user.userId;
+        const userId = req.user.id;
+        console.log('Asit');
+        console.log(userId);
+        
         const newExpense = await Expense.create({ name, amount, category, userId});
+        console.log('Asit');
+
         console.log(newExpense);
         res.status(201).json({newExpense});
     
@@ -113,18 +110,12 @@ exports.addExpense = async(req, res, next) => {
 };
 
 exports.allExpenses = async (req, res, next) => {
-    //console.log('nikhil');
+   
   
     try {
-        const token = req.header('Authorization');
-        console.log(token);
-        if (!token) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
-        const user =  jwt.verify(token, secretKey);
-        
-        const id = user.userId;
-         console.log(id);
+       
+        const id = req.user.id;
+        // console.log(id);
         const expenses = await Expense.findAll({
             where: { userId: id }
         });

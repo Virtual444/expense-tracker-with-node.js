@@ -49,9 +49,7 @@ function calculateTotalExpenses(expenses) {
         const amountInput = document.getElementById('expenseAmount');
         const amount = parseFloat(amountInput.value);
         const category = document.getElementById('categoryText').value;
-       // const entryKey = `entry_${Date.now()}`;
-    //    console.log(category);
-
+      
     const token = localStorage.getItem('token');
 
         
@@ -277,9 +275,81 @@ logOut.addEventListener("click", function (event) {
   localStorage.removeItem('token');
   window.location.href = '/login'; 
 
-})
+});
+
+//
+
+// dashboard.js
+const premiumMember = document.getElementById('razorPay');
+premiumMember.addEventListener("click", async function (event) {
+  event.preventDefault();
+
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.get('http://localhost:3000/purchase/premiumMembership', { headers: { "Authorization": token } });
+
+    const options = {
+      "key": response.data.key_id,
+      "order_id": response.data.order.id,
+      "handler": async function (response) {
+        try {
+         
+          const result = await axios.post('http://localhost:3000/purchase/updatetransactionstatus', {
+            order_id: options.order_id,
+            payment_id: response.razorpay_payment_id,
+          }, { headers: { "Authorization": token } });
+
+          console.log('Transaction result:', result.data);
+          alert('You are now a Premium User');
+        } catch (error) {
+
+          console.error('Transaction update error:', error);
+          alert('Transaction update failed');
+
+        }
+      },
+    };
+
+    const rzp1 = new Razorpay(options);
+    rzp1.open();
+    rzp1.on('payment.failed',  async function(response) {
+      try {
+        
+        
+         await axios.post('http://localhost:3000/purchase/updatetransactionstatus', {
+          order_id: options.order_id,
+          payment_id: null,
+          
+        }, { headers: { "Authorization": token } });
+     
+     
+     
+    }
+      
+     catch (error) {
+      alert('Payment Failed, Please try again');
+      console.error(error);
+    
+      
+    }
+  })
+   
+    
+  } catch (error) {
+    console.error('Premium membership request error:', error);
+    alert('Premium membership request failed');
+  }
+});
+
+
+
 
 });
+
+
+
+
+
 
 
 

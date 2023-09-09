@@ -6,6 +6,7 @@ const sequelize = require('./util/database');
 const expenseRoutes = require('./routes/expenseRoutes');
 const User = require('./models/user');
 const Expense = require('./models/expenses');
+const Order = require('./models/orders')
 const app = express();
 
 
@@ -28,7 +29,10 @@ app.get('/user/dashboard', (req, res) => {
 }); 
 
 User.hasMany(Expense);
-Expense.hasOne(User);
+Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 
 

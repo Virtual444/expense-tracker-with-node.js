@@ -4,7 +4,7 @@ const sequelize = new Sequelize ('expense_tracker_nodejs', 'root', '0000', {
   
     dialect: 'mysql',
     host: 'localhost',
-    logging: console.log,
+   // logging: console.log,
 
 });
 
