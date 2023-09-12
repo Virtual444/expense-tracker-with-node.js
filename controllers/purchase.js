@@ -2,6 +2,7 @@ require('dotenv').config();
 const razorPay = require('razorpay');
 const Order = require('../models/orders');
 const jwt = require('jsonwebtoken');
+const sequelize = require('../util/database');
 const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
 
 
@@ -53,29 +54,35 @@ exports.updatetransactionstatus = async (req, res) =>  {
         const orderId = req.body.order_id;
         const paymentId = req.body.payment_id;
         const token = req.headers.authorization;
-         const order =  await  Order.findOne({where: {orderId:orderId}})
+
+        const t =  await sequelize.transaction();
+         const order =  await  Order.findOne({where: {orderId:orderId}, transaction:t})
          const id = order.userId;
          if(!order) {
+            await t.rollback();
             return res.status(404).json({ error: 'Order not found' });
          }
 
 
         
          if (paymentId===null) {
-            await order.update({ paymentId: paymentId, status: 'FAILED' });
+            await order.update({ paymentId: paymentId, status: 'FAILED' }, {transaction:t});
+            await t.commit();
             return res.status(400).json({ success: false, message: 'Transaction failed' });
            
           } else {
-            await order.update({ paymentId: paymentId, status: 'SUCCESSFUL' });
+            await order.update({ paymentId: paymentId, status: 'SUCCESSFUL' }, {transaction:t});
             const isPremium = true;
             const newToken = generateToken(id, isPremium);
-
+            
+            await t.commit();
             return res.status(202).json({ success: true, message: 'Transaction successful', token: newToken });
             
           }
       }
      catch (error) {
         console.log(error);
+        t.rollback();
         res.status(401).json({error: error, message: 'Something went wwrong'});
         
     }
