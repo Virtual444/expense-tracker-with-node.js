@@ -86,14 +86,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
         try {
            const response =  await axios.post('http://localhost:3000/login', user)
-           console.log(response.data);
+        //    console.log(response.data);
     
            if (response.status ===  200) {
             
               localStorage.setItem( 'token', response.data.token); 
             window.location.href = 'http://localhost:3000/user/dashboard';
 
-           console.log('Asit Pal');
            }
             
         } catch (error) {

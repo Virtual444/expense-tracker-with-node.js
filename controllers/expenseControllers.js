@@ -1,13 +1,14 @@
 const  user = require('../models/user');
 const Expense = require('../models/expenses');
+const order = require('../models/orders');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
 
 
-function generateToken(id) {
-    return jwt.sign({userId: id}, secretKey)
+function generateToken(id, isPremium) {
+    return jwt.sign({userId: id, premium: isPremium}, secretKey)
 }
 
 
@@ -62,14 +63,33 @@ exports.loginUser = async (req, res, next) => {
             return res.status(401).json({ message: 'Used Email is not Registered' });
         }
         const isMatch = await bcrypt.compare(password, alreadyUser.password);
+        console.log(alreadyUser.id);
 
-          if (!isMatch) {
-            return res.status(401).json({ message: 'Incorrect password' });
-    }
+        if(isMatch) {
+            const success = await order.findOne({ where : {userId:alreadyUser.id, status:'SUCCESSFUL'}});
+            console.log('nikk');
+            console.log(success);
+            
+            if(success && success.paymentId !== null && success.status === 'SUCCESSFUL'){
+              const isPremium = true;
+              const token =  generateToken(alreadyUser.id, isPremium);
+         res.status(200).json({message: 'user logged in successfully', token:token});
+  
+            }
 
-       const token =  generateToken(alreadyUser.id);
-       res.status(200).json({message: 'user logged in successfully', token:token});
-        
+            else {
+              const isPremium = false;
+              const token =  generateToken(alreadyUser.id, isPremium);
+              res.status(200).json({message: 'user logged in successfully', token:token});
+            }
+  
+       }else {
+
+        return res.status(401).json({ message: 'Password is not correct' });
+
+       }
+  
+      
     } catch (error) {
         
         console.log(error);
@@ -89,16 +109,19 @@ exports.addExpense = async(req, res, next) => {
         if (!name || !amount || !category) {
             return res.status(400).json({ message: 'All fields are required.' });
         }
-        
+        console.log(req.user);
         const userId = req.user.id;
-        console.log('Asit');
-        console.log(userId);
+      
+       
+        const newExpense = await Expense.create({ name, amount, category, userId });
+        const expenseUser = await user.findByPk(userId);
+        if (expenseUser) {
+            expenseUser.totalExpenses += amount; 
+            await expenseUser.save(); 
+          }
         
-        const newExpense = await Expense.create({ name, amount, category, userId});
-        console.log('Asit');
-
         console.log(newExpense);
-        res.status(201).json({newExpense});
+        res.status(201).json({newExpense});   
     
         
     } catch (error) {
@@ -115,12 +138,14 @@ exports.allExpenses = async (req, res, next) => {
     try {
        
         const id = req.user.id;
-        // console.log(id);
         const expenses = await Expense.findAll({
             where: { userId: id }
         });
-        console.log(expenses);
-        res.status(200).json({ expenses });
+        const expenseUser = await user.findOne({where:{id:id}});
+        const totalExpense = expenseUser.totalExpenses;
+
+        // console.log(expenses);
+        res.status(200).json({ expenses, totalExpense });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Errorr' });
@@ -135,6 +160,9 @@ exports.deleteExpense = async (req, res, next) => {
         if(!targetExpense) {
             return res.status(404).json({error:'Expense not found'})
         }
+        const deleteUser = await user.findOne({ where: { id: targetExpense.userId } });
+        deleteUser.totalExpenses -= targetExpense.amount;
+        await deleteUser.save();
 
         await targetExpense.destroy();
         res.status(200).json({message: 'Deleted succesfullly'})
@@ -144,7 +172,7 @@ exports.deleteExpense = async (req, res, next) => {
         res.status(500).json({message: 'Internal Server error'})
     }
 
-}
+};
 
 exports.editExpense = async (req, res, next) => {
     try {
@@ -154,7 +182,7 @@ exports.editExpense = async (req, res, next) => {
       if (!expense) {
         return res.status(404).json({ error: 'Expense not found' });
       }
-  
+      
       res.status(200).json({ expense });
     } catch (error) {
 
@@ -174,12 +202,19 @@ exports.updateExpense = async (req, res, next) => {
       if (!expense) {
         return res.status(404).json({ error: 'Expense not found' });
       }
+      const editUser = await user.findOne({ where: { id: expense.userId } });
+        editUser.totalExpenses -= expense.amount;
+        
+        expense.name = name;
+        expense.amount = amount;
+        expense.category = category;
+        
+        await expense.save();
+        editUser.totalExpenses += expense.amount;
+
+        await editUser.save();
+      
   
-      expense.name = name;
-      expense.amount = amount;
-      expense.category = category;
-  
-      await expense.save();
   
       res.status(200).json({ message: 'Expense updated successfully' });
     } catch (error) {
@@ -188,5 +223,18 @@ exports.updateExpense = async (req, res, next) => {
     }
   };
 
+exports.showLeaderboard = async (req, res, next) => {
+    try {
+        
+        const leaderboardData = await user.findAll({
+          attributes: ['name', 'totalExpenses'],
+          order: [['totalExpenses', 'DESC']],
+        });
+        res.json(leaderboardData);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+};
 
 

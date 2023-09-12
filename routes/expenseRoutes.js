@@ -15,6 +15,7 @@ router.put('/edit-expense/:id', expenseControllers.updateExpense);
 router.get('/edit-expense/:id', expenseControllers.editExpense);
 router.get('/purchase/premiumMembership', authenticateToken, purchaseControllers.premiumMembership);
 router.post('/purchase/updatetransactionstatus', authenticateToken, purchaseControllers.updatetransactionstatus);
+router.get('/show-leaderboard', expenseControllers.showLeaderboard);
 
 
  

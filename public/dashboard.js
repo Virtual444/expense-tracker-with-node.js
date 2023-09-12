@@ -1,47 +1,55 @@
 document.addEventListener("DOMContentLoaded", function() {
-//
-const addExpenseButton = document.getElementById('addExpenseButton');
-const expenseTableBody = document.getElementById('expenseTableBody');
-const totalExpensesSpan = document.getElementById('totalExpenses');
-let totalExpenses = 0;
 
+  const addExpenseButton = document.getElementById('addExpenseButton');
+  const expenseTableBody = document.getElementById('expenseTableBody');
+  const totalExpensesSpan = document.getElementById('totalExpenses');
+  const categorySelect = document.getElementById("categorySelect");
+  const categoryText = document.getElementById("categoryText");
+  const logOut = document.getElementById('logOutLink');
+  const token = localStorage.getItem('token');
+  const decodeToken = parseJwt(token);
+  const premiumMember = document.getElementById('razorPay');
+  const leaderboardButton = document.getElementById('showLeaderBoard')
+  const leaderboardTableSpan = document.getElementById('leaderTableBody');
+  let totalExpenses = 0;
 
+//decode token in frontend
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
-    window.addEventListener('load', function() {
+  return JSON.parse(jsonPayload);
+}
+
+if(decodeToken.premium) {
+    const premiummessage = document.getElementById('premiumVersion');
+          premiummessage.innerHTML = '(Premium Version)';
+
+          const memebershipbutton = document.getElementById('razorPay');
+          memebershipbutton.style.display = 'none';
+
+          const leaderboardButton = document.getElementById('showLeaderBoard');
+          leaderboardButton.style.display = 'block';
+
+          
+}
+
+// reload with populate table
+window.addEventListener('load', function() {
         populateTable();
-      });
-    
-      const categorySelect = document.getElementById("categorySelect");
-        const categoryText = document.getElementById("categoryText");
-    
-        
-        categorySelect.addEventListener("change", function() {
+});
+
+//category select in expense form        
+categorySelect.addEventListener("change", function() {
             
             categoryText.value = categorySelect.value; 
-        });
-        
-        //
-        
-
-//
-
-function calculateTotalExpenses(expenses) {
-        let total = 0;
-        expenses.forEach(expense => {
-          total += expense.amount;
-        });
-        return total;
-      }
-  
-//
-
-    
-    
-    
-    
-//
-
-      addExpenseButton.addEventListener("click", async function(event) {
+});
+      
+// add expense buttton
+addExpenseButton.addEventListener("click", async function(event) {
         event.preventDefault();
     
         
@@ -85,19 +93,17 @@ function calculateTotalExpenses(expenses) {
                 message.innerHTML = '<h3>All fields are required</h3>'
 
     }
-      });
-      
+});
       
 
-      //
-      
-    function populateTable() {
+// populate table      
+function populateTable() {
       const token = localStorage.getItem('token');
      // console.log(token);
       axios.get('http://localhost:3000/allExpenses', {headers: {"Authorization" : token}} )
     
       .then(response => {
-         console.log(response.data)
+        //  console.log(response.data)
     
         if(response.data && response.data.expenses && Array.isArray(response.data.expenses)) {
     
@@ -108,7 +114,7 @@ function calculateTotalExpenses(expenses) {
           expenseTableBody.appendChild(newRow);
           // totalExpenses +=expense.amount;
           });
-          totalExpenses = calculateTotalExpenses(expenses);
+          totalExpenses = response.data.totalExpense;
           totalExpensesSpan.textContent = `$${totalExpenses.toFixed(2)}`;
        } 
        else {
@@ -123,11 +129,9 @@ function calculateTotalExpenses(expenses) {
       });
 
 
-    }
+}
     
-
-    //
-
+// populate table with data
 function createTableRow(expense, index) {
 
         const newRow = document.createElement('tr');
@@ -179,11 +183,9 @@ function createTableRow(expense, index) {
   
     return newRow;
   
-    }
+}  
 
-//    
-
-  
+// edit expense  
 function editExpense(id, event) {
       event.preventDefault();
       axios.get(`http://localhost:3000/edit-Expense/${id}`)
@@ -209,11 +211,10 @@ function editExpense(id, event) {
       .catch(error => {
         console.error('Error fetching expense:', error);
       });
-  }
+}
 
-  //
-  
-    function saveChanges(id) {
+// edit expense  
+function saveChanges(id) {
         const newName = document.getElementById('expenseName').value;
         const newAmountInput = document.getElementById('expenseAmount');
         const newAmount = parseFloat(newAmountInput.value);
@@ -235,6 +236,8 @@ function editExpense(id, event) {
         newAmountInput.value = '';
         document.getElementById('categoryText').value = '';
         expenseTableBody.innerHTML = '';
+        const message = document.getElementById('message');
+                message.innerHTML = '<h3>Successfully Edited</h3>'
         populateTable();
   
   
@@ -243,20 +246,19 @@ function editExpense(id, event) {
         console.error('Error updating expense:', error);
       });
   }
-  }
-
-  //
-  
-  
-  
-  function deleteExpense(id, expenseAmount) {
+}
+ 
+// delete expense  
+function deleteExpense(id, expenseAmount) {
     console.log(id);
     axios.delete(`/delete-expense/${id}`) 
     .then(response => {
       console.log(response.data);
-      totalExpenses -= expenseAmount;
+      
           totalExpensesSpan.textContent = `$${totalExpenses.toFixed(2)}`;
           expenseTableBody.innerHTML = '';
+          const message = document.getElementById('message');
+                message.innerHTML = '<h3>Successfully Deleted</h3>'
           populateTable();
           
     })
@@ -264,10 +266,9 @@ function editExpense(id, event) {
     .catch(error => {
       console.error('Error deleting expense:', error);
     });
-   }
+}
 
-
-const logOut = document.getElementById('logOutLink');
+// log out button
 
 logOut.addEventListener("click", function (event) {
   event.preventDefault();
@@ -277,10 +278,7 @@ logOut.addEventListener("click", function (event) {
 
 });
 
-//
-
-// dashboard.js
-const premiumMember = document.getElementById('razorPay');
+// purchase premium member button
 premiumMember.addEventListener("click", async function (event) {
   event.preventDefault();
 
@@ -299,8 +297,17 @@ premiumMember.addEventListener("click", async function (event) {
             payment_id: response.razorpay_payment_id,
           }, { headers: { "Authorization": token } });
 
-          console.log('Transaction result:', result.data);
           alert('You are now a Premium User');
+          location.reload();
+          const newToken =  result.data.token;
+          localStorage.setItem('token', newToken);
+
+          const premiummessage = document.getElementById('premiumVersion');
+          premiummessage.innerHTML = '(Premium Version)';
+
+          const memebershipbutton = document.getElementById('razorPay');
+          memebershipbutton.style.display = 'none';
+
         } catch (error) {
 
           console.error('Transaction update error:', error);
@@ -328,6 +335,7 @@ premiumMember.addEventListener("click", async function (event) {
       
      catch (error) {
       alert('Payment Failed, Please try again');
+      location.reload();
       console.error(error);
     
       
@@ -342,8 +350,47 @@ premiumMember.addEventListener("click", async function (event) {
 });
 
 
+//premium leaderboard table and features
+
+leaderboardButton.addEventListener( "click", async function(event) {
+  event.preventDefault();
+  const leaderboardTable = document.getElementById('Leaderboard-table-container');
+          leaderboardTable.style.display = 'block';
+
+ await leaderBoardTable();
+
+});
+
+async function leaderBoardTable() {
+  try {
+    const response = await axios.get('http://localhost:3000/show-leaderboard'); 
+    const responseData = response.data;
+    console.log(responseData);
+
+    const tableBody = document.getElementById("leaderTableBody");
+
+    
+    tableBody.innerHTML = '';
+
+    
+    responseData.forEach((user, index) => {
+      const row = tableBody.insertRow();
+      const numberCell = row.insertCell(0);
+      const nameCell = row.insertCell(1);
+      const totalExpensesCell = row.insertCell(2);
+
+     
+      numberCell.textContent = index + 1;
+      nameCell.textContent = user.name;
+      totalExpensesCell.textContent = user.totalExpenses;
+    });
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 
+//domcontentloaded end
 });
 
 

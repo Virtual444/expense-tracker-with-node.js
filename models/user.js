@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const User = sequelize.define ('user', {
+const User = sequelize.define ('users', {
    
      id: {
         type: Sequelize.INTEGER,
@@ -20,14 +20,19 @@ const User = sequelize.define ('user', {
      email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique:true
+        unique:true  
      },
 
 
      password:{
         type: Sequelize.STRING,
         allowNull: false
-     }
+     },
+
+     totalExpenses: {
+      type:Sequelize.FLOAT,
+      defaultValue: 0,
+    }
      
 
 });

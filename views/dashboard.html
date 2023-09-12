@@ -10,11 +10,13 @@
  
 <div class="header">
   <div class="header-left">
-    <h1>Expense Tracker</h1>
+    <h1>Expense Tracker </h1>
+    
+    <h1 id="premiumVersion" style="color: rgb(134, 48, 184); margin: 10px; display: block;"></h1>
   </div>
   <div class="header-right">
     <ul class="nav-links">
-      <li class="nav-link"><a href="/">Home</a></li>
+      <li class="nav-link"><a href="/user/dashboard">Home</a></li>
       <li class="nav-link" id="razorPay"><a href="#">Buy Membership</a></li>
       <li class="nav-link"><a href="/cart">About Us</a></li>
       <li class="nav-link"><a href="/orders">Contact Us</a></li>
@@ -48,7 +50,10 @@
       <div class="message" id="message" style="display: block; color: red;"></div>
     </form>
     <h3>Total Expenses: <span id="totalExpenses">0</span></h3>
+    <br><br>
+    <button id="showLeaderBoard" type="submit" style="display: none; width: 50%; height: 50%; color: rgb(79, 24, 100);"><h4>Show Leaderboard</h4></button>
   </div>
+  
   <div class="table-container" id="table-container">
     <table>
       <tr>
@@ -61,6 +66,21 @@
       <tbody id="expenseTableBody"></tbody>
     </table>
   </div>
+ 
+
+</div>
+
+<div class="table-container" id="Leaderboard-table-container" style="display: none; width: 43%;">
+
+  <table>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Total Expense</th>
+     
+    </tr>
+    <tbody id="leaderTableBody"></tbody>
+  </table>
 </div>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

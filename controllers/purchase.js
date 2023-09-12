@@ -1,6 +1,13 @@
 require('dotenv').config();
 const razorPay = require('razorpay');
 const Order = require('../models/orders');
+const jwt = require('jsonwebtoken');
+const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
+
+
+function generateToken(id, isPremium) {
+    return jwt.sign({userId: id, premium: isPremium}, secretKey)
+}
 
 exports.premiumMembership =  async (req, res) => {
     
@@ -14,7 +21,7 @@ exports.premiumMembership =  async (req, res) => {
         } )
        
        
-        const amount = 2500;  
+        const amount = 99900;  
         
         rzp.orders.create({amount, currency: "INR"}, async (err, orderData) => {
             if(err) {
@@ -45,7 +52,9 @@ exports.updatetransactionstatus = async (req, res) =>  {
  try {
         const orderId = req.body.order_id;
         const paymentId = req.body.payment_id;
+        const token = req.headers.authorization;
          const order =  await  Order.findOne({where: {orderId:orderId}})
+         const id = order.userId;
          if(!order) {
             return res.status(404).json({ error: 'Order not found' });
          }
@@ -58,7 +67,10 @@ exports.updatetransactionstatus = async (req, res) =>  {
            
           } else {
             await order.update({ paymentId: paymentId, status: 'SUCCESSFUL' });
-            return res.status(202).json({ success: true, message: 'Transaction successful' });
+            const isPremium = true;
+            const newToken = generateToken(id, isPremium);
+
+            return res.status(202).json({ success: true, message: 'Transaction successful', token: newToken });
             
           }
       }

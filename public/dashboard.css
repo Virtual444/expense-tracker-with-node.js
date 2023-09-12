@@ -37,12 +37,12 @@
 }
 
 button:hover {
-  background-color: #2a15e4;
+  background-color: #877de0;
 }
 .container {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: flex-start;
   margin-left: 20px; 
   margin-right: 0px;
