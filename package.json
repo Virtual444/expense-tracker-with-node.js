@@ -11,6 +11,7 @@
   "author": "ASIT PAL",
   "license": "ISC",
   "dependencies": {
+    "@getbrevo/brevo": "^1.0.1",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
@@ -23,6 +24,8 @@
     "nodemon": "^3.0.1",
     "path": "^0.12.7",
     "razorpay": "^2.9.2",
-    "sequelize": "^6.32.1"
+    "sendinblue-api": "^1.0.8",
+    "sequelize": "^6.32.1",
+    "sib-api-v3-sdk": "^8.5.0"
   }
 }

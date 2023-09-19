@@ -11,7 +11,7 @@
 <body>
 
     <div class="container">
-        <form >
+        <form>
             <label for="email" >Email:</label>
             <input type="text" id="email" required>
             <label for="password" >Password:</label>
@@ -22,14 +22,17 @@
             </div>
 <br>
             <button  type="submit" id="loginButton" >Log In</button>
+            <br><br>
+            <h4 >
+                <a href="/forgot-password">Forgot Password ?</a> &nbsp; &nbsp;
+                or
+                &nbsp; &nbsp;
+                <a href="/signup">Sign Up</a>
+
+            </h4>
 
         </form>  
        
-        <div class="login-box" style="text-align: center;" >
-                <h4>don't have account ?</h4>
-                <button class="login" onclick="window.location.href = 'http://localhost:3000/signup' ">Sign Up</button>
-
-            </div>
     
             <div class="message" id="message" style="display: block; color: red;"></div>
         </div>

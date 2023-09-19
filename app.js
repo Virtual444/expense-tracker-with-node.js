@@ -22,7 +22,11 @@ app.get('/login', (req, res) => {
 
 app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/views/signup.html');
-});    
+});
+
+app.get('/forgot-password', (req, res) => {
+  res.sendFile(__dirname + '/views/forgotPassword.html');
+}); 
 
 app.get('/user/dashboard', (req, res) => {
   res.sendFile(__dirname + '/views/dashboard.html');

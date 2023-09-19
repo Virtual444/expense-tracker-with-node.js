@@ -1,10 +1,12 @@
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
-
     
-    const signupButton = document.getElementById('signUpbutton');
+const loginButton = document.getElementById('loginButton');
+const signupButton = document.getElementById('signUpbutton');
+const forgotPassword = document.getElementById('forgot-password');
+    
+
     if (signupButton) {
         signupButton.addEventListener("click",  async function(event) {
             event.preventDefault();
@@ -71,7 +73,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
     }
 
-    const loginButton = document.getElementById('loginButton');
     if (loginButton) {
         loginButton.addEventListener("click", async function(event) {
             event.preventDefault();
@@ -123,7 +124,42 @@ document.addEventListener("DOMContentLoaded", function() {
         
     }
 
-   
+ if (forgotPassword) {
+  forgotPassword.addEventListener("click", async  function(event) {
+    event.preventDefault();
+    try {
+        const email = document.getElementById('email').value;
+      const response =  await axios.post('http://localhost:3000/forgot-password', {email});
+      console.log(response.data);
+      if(response.status==200) {
+        const data = response.data
+        if(data.message) {
+            alert(data.message);
+            location.reload();
+          }else { 
+            alert('Password reset failed. Please try again')
+            location.reload();
+          }
+
+      }else {
+        throw new Error('Network response was not ok');
+      }
+
+     
+
+    } catch (error) {
+        console.log('Error:',  error);
+        alert(error.response.data.message);
+        location.reload();
+        
+        
+    }
+
+    
+
+
+  });
+ }
 
     
     
@@ -131,12 +167,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function togglePasswordVisibility() {
-        var passwordInput = document.getElementById("password");
-                
-                if (passwordInput.type === "password") {
-                    passwordInput.type = "text";
-                } else {
-                    passwordInput.type = "password";
-                }
-    }
+    var passwordInput = document.getElementById("password");
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+}
+
+
      

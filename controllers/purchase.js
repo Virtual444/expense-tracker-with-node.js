@@ -3,7 +3,7 @@ const razorPay = require('razorpay');
 const Order = require('../models/orders');
 const jwt = require('jsonwebtoken');
 const sequelize = require('../util/database');
-const secretKey = 'x7D#pT9m$N&fE!aWjR5gKq2vC*H@LzU8';
+const secretKey = process.env.secretKey;
 
 
 function generateToken(id, isPremium) {
