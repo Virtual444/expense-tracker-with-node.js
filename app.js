@@ -6,7 +6,8 @@ const sequelize = require('./util/database');
 const expenseRoutes = require('./routes/expenseRoutes');
 const User = require('./models/user');
 const Expense = require('./models/expenses');
-const Order = require('./models/orders')
+const Order = require('./models/orders');
+const forgotPasswordRequest = require('./models/forgotPasswordRequest');
 const app = express();
 
 
@@ -24,19 +25,27 @@ app.get('/signup', (req, res) => {
   res.sendFile(__dirname + '/views/signup.html');
 });
 
-app.get('/forgot-password', (req, res) => {
+app.get('/password/forgot-password', (req, res) => {
   res.sendFile(__dirname + '/views/forgotPassword.html');
 }); 
 
 app.get('/user/dashboard', (req, res) => {
   res.sendFile(__dirname + '/views/dashboard.html');
-}); 
+});
+
+app.get('/password/reset-password/:requestId', (req, res) => {
+  
+  res.sendFile(__dirname + '/views/passwordResetForm.html');
+});
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(forgotPasswordRequest);
+forgotPasswordRequest.belongsTo(User);
 
 
 

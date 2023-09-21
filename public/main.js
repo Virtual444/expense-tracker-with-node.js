@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
 const loginButton = document.getElementById('loginButton');
 const signupButton = document.getElementById('signUpbutton');
 const forgotPassword = document.getElementById('forgot-password');
+const updatePassword = document.getElementById('newPassword');
     
 
     if (signupButton) {
@@ -26,11 +27,10 @@ const forgotPassword = document.getElementById('forgot-password');
             if (!name || !email || !password) {
                 
                 document.getElementById('message').innerHTML = '<h3>All fields are required.</h3>';
+                alert('All fields are required.')
                 return;
             }
-            console.log(user);
-            
-                
+              
             try {
                 const response = await axios.post(`http://localhost:3000/signup`, user);
             
@@ -53,13 +53,13 @@ const forgotPassword = document.getElementById('forgot-password');
                 
                 if (error.response && error.response.data && error.response.data.message === 'User already Exists') {
                     
-                    const message = document.getElementById('message');
-                    message.innerHTML = '<h3> User already exists. Please choose a different email or log in.</h3>'
+                    alert('User already exists. Please choose a different email or log in.')
         
                 }
                 
                 else if(error.response && error.response.data && error.response.data.message === 'All fields are required.'){
-                    message.innerHTML = '<h3> All fields are required.</h3>'
+                    
+                    alert(' All fields are required.');
 
                 }
                 else {
@@ -101,14 +101,17 @@ const forgotPassword = document.getElementById('forgot-password');
             console.log(error.response);
 
             if (error.response) {
-                const message = document.getElementById('message');
+                
 
                 if (error.response.data && error.response.data.message === 'Used Email is not Registered') {
-                    message.innerHTML = '<h3>Email is not Registered</h3>';
+                   
+                    alert('Email is not Registered');
                 } else if (error.response.data && error.response.data.message === 'All fields are required.') {
-                    message.innerHTML = '<h3>All fields are required.</h3>';
-                } else if (error.response.data && error.response.data.message === 'Incorrect password') {
-                    message.innerHTML = '<h3>Incorrect password.</h3>';
+                    alert('All fields are required.');
+                } else if (error.response.data && error.response.data.message === 'Password is not correct') {
+                    alert('Incorrect password.');
+
+
                 } else {
                     console.log('An error occurred:', error);
                 }
@@ -129,7 +132,7 @@ const forgotPassword = document.getElementById('forgot-password');
     event.preventDefault();
     try {
         const email = document.getElementById('email').value;
-      const response =  await axios.post('http://localhost:3000/forgot-password', {email});
+      const response =  await axios.post('http://localhost:3000/password/forgot-password', {email});
       console.log(response.data);
       if(response.status==200) {
         const data = response.data
@@ -161,6 +164,34 @@ const forgotPassword = document.getElementById('forgot-password');
   });
  }
 
+  if(updatePassword) {
+    updatePassword.addEventListener("click", async function(event) {
+        event.preventDefault();
+
+        
+        try {
+            const password = document.getElementById('password').value;
+            const requestId = window.location.pathname.split('/').pop();
+            const response = await axios.post(`http://localhost:3000/password/reset-password/${requestId}`, {password});
+            console.log(response);
+            if(response.status===200) {
+                alert('Password Reset Successfully');
+                window.location.href = 'http://localhost:3000/login';
+
+            }else {
+                console.error('Password reset failed:', response.data.message);     
+            
+            }
+
+
+            
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
+
+      
+    });
+  }
     
     
 });

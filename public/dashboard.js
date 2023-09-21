@@ -78,6 +78,7 @@ addExpenseButton.addEventListener("click", async function(event) {
                 amountInput.value = '';
                 document.getElementById('categoryText').value = '';
                 expenseTableBody.innerHTML = '';
+                alert('Successfully added');
                 const message = document.getElementById('message');
                 message.innerHTML = '<h3>Successfully added</h3>'
 
@@ -89,8 +90,7 @@ addExpenseButton.addEventListener("click", async function(event) {
             console.log(error);
              }
     }else {
-      const message = document.getElementById('message');
-                message.innerHTML = '<h3>All fields are required</h3>'
+     alert('All fields are required.');
 
     }
 });
@@ -236,6 +236,7 @@ function saveChanges(id) {
         newAmountInput.value = '';
         document.getElementById('categoryText').value = '';
         expenseTableBody.innerHTML = '';
+        alert('Successfully Edited');
         const message = document.getElementById('message');
                 message.innerHTML = '<h3>Successfully Edited</h3>'
         populateTable();
@@ -257,6 +258,7 @@ function deleteExpense(id, expenseAmount) {
       
           totalExpensesSpan.textContent = `$${totalExpenses.toFixed(2)}`;
           expenseTableBody.innerHTML = '';
+          alert('Successfully Deleted');
           const message = document.getElementById('message');
                 message.innerHTML = '<h3>Successfully Deleted</h3>'
           populateTable();
