@@ -7,12 +7,13 @@ const sequelize = require('../util/database')
 exports.forgotPassword = async (req, res, next) => {const { email } = req.body;
 
 try {
+    const t = await sequelize.transaction();
 
     if (!email) {
+        await t.rollback();
         return res.status(400).json({ message: 'Email is required.' });
     }
     
-    const t = await sequelize.transaction();
     
     const existingUser = await user.findOne({ where: { email }, transaction: t });
     
@@ -25,7 +26,7 @@ try {
     const client = brevo.ApiClient.instance
 
     const apikey = client.authentications['api-key']
-    apikey.apiKey = process.env.sendBlueInApi;
+    apikey.apiKey = 'xsmtpsib-ec317f96a01c9b00a7e4d95391c28fafc450ff7f06f573a3d96671b8a665c4be-gmES7By36M49HOLw';
     
     const transEmailApi = new brevo.TransactionalEmailsApi()
     const sendSmtpEmail = new brevo.SendSmtpEmail();

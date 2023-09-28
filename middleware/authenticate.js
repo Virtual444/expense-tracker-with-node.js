@@ -5,6 +5,9 @@ const User = require('../models/user');
 
 function authenticateToken(req, res, next) {
     const token = req.header('Authorization');
+    console.log('nikhil');
+    console.log(token);
+    console.log(req.header('Authorization'));
 
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });

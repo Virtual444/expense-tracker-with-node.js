@@ -51,7 +51,7 @@
     </form>
     <h3>Total Expenses: <span id="totalExpenses">0</span></h3>
     <br><br>
-    <button id="showLeaderBoard" type="submit" style="display: none; width: 50%; height: 50%; color: rgb(79, 24, 100);"><h4>Show Leaderboard</h4></button>
+    
   </div>
   
   <div class="table-container" id="table-container">
@@ -70,6 +70,13 @@
 
 </div>
 
+<div>
+  <button id="showLeaderBoard" type="submit" style="display: none; width: 20%; height: 50%; color: rgb(79, 24, 100);"><h4>Show Leaderboard</h4></button>
+</div>
+
+<button id="downloadExpenseButton" style="width: 50%; height: 50%;">Download Expense</button>
+  <button id="downloadHistoryButton" style="width: 50%; height: 50%;">Download History</button>
+  
 <div class="table-container" id="Leaderboard-table-container" style="display: none; width: 43%;">
 
   <table>
@@ -81,7 +88,9 @@
     </tr>
     <tbody id="leaderTableBody"></tbody>
   </table>
+  
 </div>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/dashboard.js"></script>

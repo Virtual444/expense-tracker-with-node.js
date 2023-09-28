@@ -10,8 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const decodeToken = parseJwt(token);
   const premiumMember = document.getElementById('razorPay');
   const leaderboardButton = document.getElementById('showLeaderBoard')
-  const leaderboardTableSpan = document.getElementById('leaderTableBody');
   let totalExpenses = 0;
+  const downloadExpenseButton = document.getElementById("downloadExpenseButton");
+  const downloadHistoryButton = document.getElementById("downloadHistoryButton");
 
 //decode token in frontend
 function parseJwt (token) {
@@ -390,6 +391,58 @@ async function leaderBoardTable() {
     console.error('Error:', error);
   }
 }
+
+
+if (downloadExpenseButton) {
+  downloadExpenseButton.addEventListener("click", async function (event) {
+    event.preventDefault();
+
+    try {
+      
+      const response = await axios.post('http://localhost:3000/expenses/download-expense', null,{headers: {Authorization : token}});
+ 
+      if (response.status === 200 && response.data) {
+        
+        const blob = new Blob([response.data], { type: 'text/plain' });
+        const blobUrl = window.URL.createObjectURL(blob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = blobUrl;
+        downloadLink.download = 'expenses.txt';
+        downloadLink.style.display = 'none'; 
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(blobUrl);
+      } else {
+        console.error('Download failed or no file content received.');
+      }
+    } catch (error) {
+      console.error('An error occurred while downloading expenses:', error);
+    }
+});
+
+
+
+
+
+  
+}
+
+if (downloadHistoryButton) {
+  downloadHistoryButton.addEventListener("click", async function (event) {
+    event.preventDefault();
+
+    try {
+      const response = await axios.get('http://localhost:3000/expenses/download-expense-history', {headers: {Authorization : token}});
+      
+      
+    } catch (error) { 
+      console.error('An error occurred while fetching downloading expenses history:', error)
+    }
+
+  });
+}
+
 
 
 //domcontentloaded end
