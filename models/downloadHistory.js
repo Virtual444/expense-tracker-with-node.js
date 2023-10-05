@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize'); 
-const sequelize = require('../util/database');
+const Sequelize = require("sequelize");
+const sequelize = require("../util/database");
 
-const DownloadHistory = sequelize.define('downloadHistory', {
+const DownloadHistory = sequelize.define("downloadHistory", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -16,8 +16,8 @@ const DownloadHistory = sequelize.define('downloadHistory', {
     type: Sequelize.DATE,
     allowNull: false,
   },
-  downloadedFileUrl: { 
-    type: Sequelize.TEXT ,
+  downloadedFileUrl: {
+    type: Sequelize.TEXT,
     allowNull: false,
   },
 });

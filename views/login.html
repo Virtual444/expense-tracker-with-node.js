@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/main.css">
-    <title>Login Page </title>
-    
-    
-</head>
-<body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <title>Login Page</title>
+  </head>
+  <body>
     <div class="container">
-        <form>
-            <label for="email" >Email:</label>
-            <input type="text" id="email" required>
-            <label for="password" >Password:</label>
-            <input type="password" id="password"  required>
-            <div class="checkbox-container">
-                <input type="checkbox" class="form-checkbox" id="visibilityCheckbox" onchange="togglePasswordVisibility()">
-                <label for="visibilityCheckbox" id="form-checkbox-label">Show Password</label>
-            </div>
-<br>
-            <button  type="submit" id="loginButton" >Log In</button>
-            <br><br>
-            <h4 >
-                <a href="password/forgot-password">Forgot Password ?</a> &nbsp; &nbsp;
-                or
-                &nbsp; &nbsp;
-                <a href="/signup">Sign Up</a>
-
-            </h4>
-
-        </form>  
-       
+      <form>
+        <label for="email">Email:</label>
+        <input type="text" id="email" required />
+        <label for="password">Password:</label>
+        <input type="password" id="password" required />
+        <div class="checkbox-container">
+          <input
+            type="checkbox"
+            class="form-checkbox"
+            id="visibilityCheckbox"
+            onchange="togglePasswordVisibility()"
+          />
+          <label for="visibilityCheckbox" id="form-checkbox-label"
+            >Show Password</label
+          >
         </div>
+        <br />
+        <button type="submit" id="loginButton">Log In</button>
+        <br /><br />
+        <h4>
+          <a href="password/forgot-password">Forgot Password ?</a> &nbsp; &nbsp;
+          or &nbsp; &nbsp;
+          <a href="/signup">Sign Up</a>
+        </h4>
+      </form>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/main.js"></script>
-</body>
+  </body>
 </html>
