@@ -6,7 +6,7 @@ const sequelize = require("../util/database");
 
 exports.forgotPassword = async (req, res, next) => {
   const { email } = req.body;
-
+ 
   try {
     const t = await sequelize.transaction();
 
@@ -16,7 +16,7 @@ exports.forgotPassword = async (req, res, next) => {
     }
 
     const existingUser = await user.findOne({
-      where: { email },
+      where: { email }, 
       transaction: t,
     });
 
@@ -34,8 +34,8 @@ exports.forgotPassword = async (req, res, next) => {
     const client = brevo.ApiClient.instance;
 
     const apikey = client.authentications["api-key"];
-    apikey.apiKey =
-      "xsmtpsib-ec317f96a01c9b00a7e4d95391c28fafc450ff7f06f573a3d96671b8a665c4be-gmES7By36M49HOLw";
+    apikey.apiKey =process.env.sendBlueInApi
+    
 
     const transEmailApi = new brevo.TransactionalEmailsApi();
     const sendSmtpEmail = new brevo.SendSmtpEmail();
@@ -62,7 +62,7 @@ exports.forgotPassword = async (req, res, next) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error(error);     
         res.status(500).json({ error: "Internal Server error" });
       });
 

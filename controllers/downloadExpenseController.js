@@ -1,3 +1,4 @@
+require('dotenv').config(); 
 const AWS = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
@@ -18,7 +19,7 @@ const s3 = new AWS.S3();
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: "expense-tracker-with-nodejs",
+    bucket:process.env.BUCKET,
     key: function (req, file, cb) {
       cb(null, "expense-reports/" + Date.now() + "-" + file.originalname);
     },
@@ -49,7 +50,7 @@ exports.downloadExpense = async (req, res, next) => {
       .join("\n");
 
     const params = {
-      Bucket: "expense-tracker-with-nodejs",
+      Bucket: process.env.BUCKET,
       Key: fileName,
       Body: expenseText,
       ContentType: "text/plain",
@@ -58,7 +59,7 @@ exports.downloadExpense = async (req, res, next) => {
     await s3.upload(params).promise();
 
     const downloadParams = {
-      Bucket: "expense-tracker-with-nodejs",
+      Bucket: process.env.BUCKET,
       Key: params.Key,
     };
 
@@ -83,15 +84,18 @@ exports.downloadExpense = async (req, res, next) => {
 };
 
 exports.showDownloadHistory = async (req, res, next) => {
+  const t = await sequelize.transaction();
+
   try {
-    const t = await sequelize.transaction();
+   
     const downloadHistory = await DownloadHistory.findAll({
       where: { userId: req.user.id },
       order: [["downloadedAt", "DESC"]],
+      attributes: ['downloadedFileUrl', 'downloadedAt'],
       transaction: t,
     });
     await t.commit();
-    res.json(downloadHistory);
+    res.status(200).json({downloadHistory });
   } catch (error) {
     console.error("Error fetching download history:", error);
     if (t) await t.rollback();

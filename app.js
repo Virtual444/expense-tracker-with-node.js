@@ -34,6 +34,9 @@ app.get("/user/dashboard", (req, res) => {
 app.get("/password/reset-password/:requestId", (req, res) => {
   res.sendFile(__dirname + "/views/passwordResetForm.html");
 });
+app.get("/show-download-history", (req, res) => {
+  res.sendFile(__dirname + "/views/downloadHistory.html");
+});
 
 User.hasMany(Expense);
 Expense.belongsTo(User);

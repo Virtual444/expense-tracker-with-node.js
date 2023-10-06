@@ -10,9 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const premiumMember = document.getElementById("razorPay");
   let totalExpenses = 0;
   const downloadExpense = document.getElementById("downloadExpense");
-  const downloadHistoryButton = document.getElementById(
-    "downloadHistoryButton"
-  );
+  const downloadHistoryButton = document.getElementById("showDownloadHistory");
 
   localStorage.setItem("expensePerPage", "10");
   let currentPage = 1;
@@ -36,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (decodeToken.premium) {
     const premiummessage = document.getElementById("premiumVersion");
-    premiummessage.innerHTML = "(Premium Version)";
+    premiummessage.innerHTML = "(PREMIUM)";
 
     const memebershipbutton = document.getElementById("razorPay");
     memebershipbutton.style.display = "none";
@@ -48,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const downloadExpensebutton = document.getElementById("downloadExpense");
     downloadExpensebutton.style.display = "block";
+
+    downloadHistoryButton.style.display = "block";
 
     leaderBoardTable();
   }
@@ -146,8 +146,10 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { Authorization: token },
         params: { page: page, itemsPerPage: itemsPerPage },
       })
+      
 
       .then((response) => {
+       
         if (
           response.data &&
           response.data.expenses &&
@@ -442,19 +444,54 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // if (downloadHistoryButton) {
-  //   downloadHistoryButton.addEventListener("click", async function (event) {
-  //     event.preventDefault();
+  downloadHistoryButton.addEventListener("click", async function (event) {
+    event.preventDefault();
+    if (decodeToken.premium) {
+      
+            try {
+        const response = await axios.get(
+          "http://localhost:3000/expenses/download-expense-history",
+          { headers: { Authorization: token } }
+        );
+         
+        if (
+          response.data &&
+          response.data.downloadHistory &&
+          Array.isArray(response.data.downloadHistory)) {
+          const downloadHistory = response.data.downloadHistory;
+          const tableBody = document.getElementById("leaderTableBody");
 
-  //     try {
-  //       const response = await axios.get('http://localhost:3000/expenses/download-expense-history', {headers: {Authorization : token}});
+             tableBody.innerHTML = "";
 
-  //     } catch (error) {
-  //       console.error('An error occurred while fetching downloading expenses history:', error)
-  //     }
+          downloadHistory.forEach((history, index) => {
+            const row = tableBody.insertRow();
+        const numberCell = row.insertCell(0);
+        const urlCell = row.insertCell(1);
+        const downloadDateCell = row.insertCell(2);
 
-  //   });
-  // }
+        numberCell.textContent = index + 1;
+        urlCell.textContent = history.downloadedFileUrl;
+        downloadDateCell.textContent = history.downloadedAt;
+          });
 
+
+          }else {
+           
+              console.log("invalid response data structure");
+            
+          }
+      } catch (error) {
+        console.error(
+          "An error occurred while fetching downloading expenses history:",
+          error
+        );
+      }
+    }else {
+      alert('You are not pro user')
+    }
+    });
+  
+    
+    
   //domcontentloaded end
 });

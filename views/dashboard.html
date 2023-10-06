@@ -14,9 +14,20 @@
     <div class="header">
       <div class="header-left">
         <h1>Expense Tracker</h1>
-        <h4 id="premiumVersion" style="color: blueviolet"></h4>
+        <h4
+          id="premiumVersion"
+          style="color: rgb(76, 3, 145); font-weight: bold"
+        ></h4>
       </div>
       <div class="header-right">
+        <button
+          class="nav-link"
+          id="showDownloadHistory"
+          style="background-color: rgb(11, 128, 163); display: none"
+          onclick="window.location='/show-download-history'";
+        >
+          Previous Downloads
+        </button>
         <button
           class="nav-link"
           id="razorPay"

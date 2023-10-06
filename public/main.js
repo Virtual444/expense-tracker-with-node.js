@@ -117,7 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
           "http://localhost:3000/password/forgot-password",
           { email }
         );
-        console.log(response.data);
+
+        console.log(response);
         if (response.status == 200) {
           const data = response.data;
           if (data.message) {
