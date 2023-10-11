@@ -1,2 +1,8 @@
 #secret
 .env
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore npm lock file
+package-lock.json
