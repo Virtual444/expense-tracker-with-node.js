@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async   function() {
       
         try {
     const response = await axios.get(
-      "http://localhost:3000/expenses/download-expense-history",
+      "/expenses/download-expense-history",
       { headers: { Authorization: token } }
     );
      

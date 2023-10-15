@@ -41,7 +41,7 @@ exports.forgotPassword = async (req, res, next) => {
     const sendSmtpEmail = new brevo.SendSmtpEmail();
 
     sendSmtpEmail.subject = "Password Reset Link for Expense Tracker";
-    sendSmtpEmail.htmlContent = `<html><body><h3>Click below to reset your password</h3><a href="http://localhost:3000/password/reset-password/${resetRequest.id}"> CLICK HERE </a></body></html>`;
+    sendSmtpEmail.htmlContent = `<html><body><h3>Click below to reset your password</h3><a href="/password/reset-password/${resetRequest.id}"> CLICK HERE </a></body></html>`;
     sendSmtpEmail.sender = {
       name: "Expense Tracker",
       email: "asitpal211@gmail.com",

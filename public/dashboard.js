@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       try {
         const response = await axios.post(
-          "http://localhost:3000/user/add-expense",
+          "/user/add-expense",
           data,
           { headers: { Authorization: token } }
         );
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     axios
-      .get("http://localhost:3000/allExpenses", {
+      .get("/allExpenses", {
         headers: { Authorization: token },
         params: { page: page, itemsPerPage: itemsPerPage },
       })
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function editExpense(id, event) {
     event.preventDefault();
     axios
-      .get(`http://localhost:3000/edit-Expense/${id}`)
+      .get(`/edit-Expense/${id}`)
       .then((response) => {
         const expense = response.data.expense;
 
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       axios
-        .put(`http://localhost:3000/edit-expense/${id}`, data)
+        .put(`/edit-expense/${id}`, data)
         .then((response) => {
           console.log("Expense updated successfully:", response.data);
           document.getElementById("expenseName").value = "";
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        "http://localhost:3000/purchase/premiumMembership",
+        "/purchase/premiumMembership",
         { headers: { Authorization: token } }
       );
 
@@ -338,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
         handler: async function (response) {
           try {
             const result = await axios.post(
-              "http://localhost:3000/purchase/updatetransactionstatus",
+              "/purchase/updatetransactionstatus",
               {
                 order_id: options.order_id,
                 payment_id: response.razorpay_payment_id,
@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
       rzp1.on("payment.failed", async function (response) {
         try {
           await axios.post(
-            "http://localhost:3000/purchase/updatetransactionstatus",
+            "/purchase/updatetransactionstatus",
             {
               order_id: options.order_id,
               payment_id: null,
@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function leaderBoardTable() {
     try {
       const response = await axios.get(
-        "http://localhost:3000/show-leaderboard"
+        "/show-leaderboard"
       );
       const responseData = response.data;
 
@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/expenses/download-expense",
+        "/expenses/download-expense",
         null,
         { headers: { Authorization: token } }
       );
@@ -450,7 +450,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
             try {
         const response = await axios.get(
-          "http://localhost:3000/expenses/download-expense-history",
+          "/expenses/download-expense-history",
           { headers: { Authorization: token } }
         );
          

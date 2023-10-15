@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        const response = await axios.post(`http://localhost:3000/signup`, user);
+        const response = await axios.post(`/signup`, user);
 
         console.log(response);
 
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
           message.innerHTML =
             "<h3> Successfully signed up! Redirecting to login page...</h3>";
           setTimeout(() => {
-            window.location.href = "http://localhost:3000/login";
+            window.location.href = "/login";
           }, 3000);
         }
       } catch (error) {
@@ -72,12 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       try {
-        const response = await axios.post("http://localhost:3000/login", user);
+        const response = await axios.post("/login", user);
         //    console.log(response.data);
 
         if (response.status === 200) {
           localStorage.setItem("token", response.data.token);
-          window.location.href = "http://localhost:3000/user/dashboard";
+          window.location.href = "/user/dashboard";
         }
       } catch (error) {
         console.log(error.response);
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const email = document.getElementById("email").value;
         const response = await axios.post(
-          "http://localhost:3000/password/forgot-password",
+          "/password/forgot-password",
           { email }
         );
 
@@ -147,13 +147,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.getElementById("password").value;
         const requestId = window.location.pathname.split("/").pop();
         const response = await axios.post(
-          `http://localhost:3000/password/reset-password/${requestId}`,
+          `/password/reset-password/${requestId}`,
           { password }
         );
         console.log(response);
         if (response.status === 200) {
           alert("Password Reset Successfully");
-          window.location.href = "http://localhost:3000/login";
+          window.location.href = "/login";
         } else {
           console.error("Password reset failed:", response.data.message);
         }
