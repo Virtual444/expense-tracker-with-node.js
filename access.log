@@ -1,0 +1,39 @@
+[2023-10-15T08:40:25.493Z] ERROR: (node:1928) NOTE: We are formalizing our plans to enter AWS SDK for JavaScript (v2) into maintenance mode in 2023.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check the migration guide at https://a.co/7PzMCcy
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2023-10-15T08:40:26.120Z] INFO: Server is running on port 3000
+[2023-10-15T08:43:16.482Z] Sequelize: Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'users' AND TABLE_SCHEMA = 'expense_tracker_nodejs'
+[2023-10-15T08:43:16.489Z] Sequelize: Executing (default): SHOW INDEX FROM `users`
+[2023-10-15T08:43:16.496Z] Sequelize: Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'orders' AND TABLE_SCHEMA = 'expense_tracker_nodejs'
+[2023-10-15T08:43:16.499Z] Sequelize: Executing (default): SHOW INDEX FROM `orders`
+[2023-10-15T08:43:16.502Z] Sequelize: Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'Expenses' AND TABLE_SCHEMA = 'expense_tracker_nodejs'
+[2023-10-15T08:43:16.505Z] Sequelize: Executing (default): SHOW INDEX FROM `Expenses`
+[2023-10-15T08:43:16.509Z] Sequelize: Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'forgotPasswordRequests' AND TABLE_SCHEMA = 'expense_tracker_nodejs'
+[2023-10-15T08:43:16.511Z] Sequelize: Executing (default): SHOW INDEX FROM `forgotPasswordRequests`
+[2023-10-15T08:43:16.515Z] Sequelize: Executing (default): SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME = 'downloadHistories' AND TABLE_SCHEMA = 'expense_tracker_nodejs'
+[2023-10-15T08:43:16.518Z] Sequelize: Executing (default): SHOW INDEX FROM `downloadHistories`
+[2023-10-15T08:43:21.505Z] Sequelize: Executing (default): SELECT `name`, `totalExpenses` FROM `users` AS `users` ORDER BY `users`.`totalExpenses` DESC;
+[2023-10-15T08:43:22.156Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:22.161Z] Sequelize: Executing (default): SELECT `id`, `name`, `amount`, `category`, `userId`, `createdAt`, `updatedAt` FROM `Expenses` AS `Expense` WHERE `Expense`.`userId` = 11 LIMIT 0, 10;
+[2023-10-15T08:43:22.165Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:28.275Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:28.278Z] Sequelize: Executing (a92b1d88-39e1-43d5-97f5-250eb0d52ac2): START TRANSACTION;
+[2023-10-15T08:43:28.289Z] Sequelize: Executing (a92b1d88-39e1-43d5-97f5-250eb0d52ac2): INSERT INTO `Expenses` (`id`,`name`,`amount`,`category`,`userId`,`createdAt`,`updatedAt`) VALUES (DEFAULT,?,?,?,?,?,?);
+[2023-10-15T08:43:28.294Z] Sequelize: Executing (a92b1d88-39e1-43d5-97f5-250eb0d52ac2): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:28.298Z] Sequelize: Executing (a92b1d88-39e1-43d5-97f5-250eb0d52ac2): UPDATE `users` SET `totalExpenses`=?,`updatedAt`=? WHERE `id` = ?
+[2023-10-15T08:43:28.301Z] Sequelize: Executing (a92b1d88-39e1-43d5-97f5-250eb0d52ac2): COMMIT;
+[2023-10-15T08:43:29.952Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:29.954Z] Sequelize: Executing (default): SELECT `id`, `name`, `amount`, `category`, `userId`, `createdAt`, `updatedAt` FROM `Expenses` AS `Expense` WHERE `Expense`.`userId` = 11 LIMIT 0, 10;
+[2023-10-15T08:43:29.960Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:33.800Z] Sequelize: Executing (default): SELECT `id`, `name`, `amount`, `category`, `userId`, `createdAt`, `updatedAt` FROM `Expenses` AS `Expense` WHERE `Expense`.`id` = '49';
+[2023-10-15T08:43:38.007Z] Sequelize: Executing (0bbb40e3-b08c-4e08-a2ca-12badcc4ead3): START TRANSACTION;
+[2023-10-15T08:43:38.008Z] Sequelize: Executing (0bbb40e3-b08c-4e08-a2ca-12badcc4ead3): SELECT `id`, `name`, `amount`, `category`, `userId`, `createdAt`, `updatedAt` FROM `Expenses` AS `Expense` WHERE `Expense`.`id` = '49';
+[2023-10-15T08:43:38.011Z] Sequelize: Executing (0bbb40e3-b08c-4e08-a2ca-12badcc4ead3): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:38.014Z] Sequelize: Executing (0bbb40e3-b08c-4e08-a2ca-12badcc4ead3): UPDATE `Expenses` SET `amount`=?,`updatedAt`=? WHERE `id` = ?
+[2023-10-15T08:43:38.017Z] Sequelize: Executing (0bbb40e3-b08c-4e08-a2ca-12badcc4ead3): UPDATE `users` SET `totalExpenses`=?,`updatedAt`=? WHERE `id` = ?
+[2023-10-15T08:43:38.018Z] Sequelize: Executing (0bbb40e3-b08c-4e08-a2ca-12badcc4ead3): COMMIT;
+[2023-10-15T08:43:39.355Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;
+[2023-10-15T08:43:39.358Z] Sequelize: Executing (default): SELECT `id`, `name`, `amount`, `category`, `userId`, `createdAt`, `updatedAt` FROM `Expenses` AS `Expense` WHERE `Expense`.`userId` = 11 LIMIT 0, 10;
+[2023-10-15T08:43:39.362Z] Sequelize: Executing (default): SELECT `id`, `name`, `email`, `password`, `totalExpenses`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 11;

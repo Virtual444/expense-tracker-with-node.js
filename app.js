@@ -11,6 +11,11 @@ const Order = require("./models/orders");
 const forgotPasswordRequest = require("./models/forgotPasswordRequest");
 const app = express();
 
+const accessLogStream=fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+sequelize.options.logging = (message) => {
+  accessLogStream.write(`[${new Date().toISOString()}] Sequelize: ${message}\n`);
+};
+
 app.use(cors());
 app.use(express.json());  
 app.use(express.static("public"));
